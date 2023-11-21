@@ -1,36 +1,27 @@
-import { useState } from "react";
-import { Button } from "../Button/Button";
-import { List } from "../List/List";
-import styles from "./Panel.module.css";
+import { useEffect, useState } from 'react';
+import { List } from '../List/List';
+import styles from './Panel.module.css';
 
 export function Panel() {
-    const [data, setData] = useState([
-        {
-            id: 1,
-            word: "kot",
-            translation: "cat",
-            category: "noun",
-        },
-        {
-            id: 2,
-            word: "pies",
-            translation: "dog",
-            category: "noun",
-        },
-        {
-            id: 3,
-            word: "skakać",
-            translation: "jump",
-            category: "verb",
-        },
-    ]);
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-    return (
-        <>
-            <Button>Załaduje dane</Button>
-            <section className={styles.section}>
-                <List data={data}></List>
-            </section>
-        </>
-    );
+  useEffect(() => {
+    fetch('http://localhost:3000/words')
+      .then((res) => res.json())
+      .then((res) => {
+        setData(res);
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) return <p>Ładowanie...</p>;
+
+  return (
+    <>
+      <section className={styles.section}>
+        <List data={data}></List>
+      </section>
+    </>
+  );
 }
