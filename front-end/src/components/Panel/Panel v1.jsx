@@ -10,20 +10,9 @@ export function Panel() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const url = 'http://localhost:3000/words';
 
   useEffect(() => {
-    const params = selectedCategory ? `?category=${selectedCategory}` : '';
-    fetch(`${url}${params}`)
-      .then((res) => res.json())
-      .then((res) => {
-        setData(res);
-        setIsLoading(false);
-      });
-  }, [selectedCategory]);
-
-  useEffect(() => {
-    fetch(url)
+    fetch('http://localhost:3000/words')
       .then((res) => res.json())
       .then((res) => {
         setData(res);
@@ -32,7 +21,7 @@ export function Panel() {
   }, []);
 
   const handleFormSubmit = (formData) => {
-    fetch(url, {
+    fetch('http://localhost:3000/words', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -41,14 +30,12 @@ export function Panel() {
     })
       .then((res) => res.json())
       .then((res) => {
-        if (!selectedCategory || selectedCategory === res.category) {
-          setData((prevData) => [...prevData, res]);
-        }
+        setData((prevData) => [...prevData, res]);
       });
   };
 
   const handleDeleteItem = (id) => {
-    fetch(`${url}/${id}`, {
+    fetch(`http://localhost:3000/words/${id}`, {
       method: 'DELETE',
     })
       .then((res) => {
@@ -67,6 +54,10 @@ export function Panel() {
   };
 
   const handleFilterClick = (category) => {
+    const params = category ? `?category=${category}` : '';
+    fetch(`http://localhost:3000/words${params}`)
+      .then((res) => res.json())
+      .then((res) => setData(res));
     setSelectedCategory(category);
   };
 
