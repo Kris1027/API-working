@@ -13,13 +13,20 @@ export function Panel() {
   const url = 'http://localhost:3000/words';
 
   useEffect(() => {
+    let isCanceled = false;
     const params = selectedCategory ? `?category=${selectedCategory}` : '';
     fetch(`${url}${params}`)
       .then((res) => res.json())
       .then((res) => {
-        setData(res);
-        setIsLoading(false);
+        if (!isCanceled) {
+          setData(res);
+          setIsLoading(false);
+        }
       });
+
+    return () => {
+      isCanceled = true;
+    };
   }, [selectedCategory]);
 
   useEffect(() => {
@@ -43,6 +50,7 @@ export function Panel() {
       .then((res) => {
         if (!selectedCategory || selectedCategory === res.category) {
           setData((prevData) => [...prevData, res]);
+          alert('Dodałeś słowo!');
         }
       });
   };
@@ -54,6 +62,7 @@ export function Panel() {
       .then((res) => {
         if (res.ok) {
           setData((prevState) => prevState.filter((item) => item.id !== id));
+          alert('Usunąłeś słowo!');
         } else {
           throw new Error('Błąd podczas usuwania!');
         }
