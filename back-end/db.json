@@ -13,10 +13,10 @@
       "category": "noun"
     },
     {
-      "id": 3,
       "word": "skakać",
       "translation": "jump",
-      "category": "verb"
+      "category": "verb",
+      "id": 3
     }
   ]
 }
