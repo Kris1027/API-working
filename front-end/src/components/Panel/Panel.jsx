@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { List } from '../List/List';
 import styles from './Panel.module.css';
 import { Form } from '../Form/Form';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { FilterButton } from '../FilterButton/FilterButton';
+import { getCategoryInfo } from '../../utils/getCategoryInfo';
+import { Info } from '../Info/Info';
 
 export function Panel() {
   const [data, setData] = useState([]);
@@ -29,14 +31,9 @@ export function Panel() {
     };
   }, [selectedCategory]);
 
-  useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((res) => {
-        setData(res);
-        setIsLoading(false);
-      });
-  }, []);
+  const categoryInfo = useMemo(() => {
+    getCategoryInfo(selectedCategory);
+  }, [selectedCategory]);
 
   const handleFormSubmit = (formData) => {
     fetch(url, {
@@ -85,6 +82,7 @@ export function Panel() {
     <>
       {error && <ErrorMessage>{error}</ErrorMessage>}
       <section className={styles.section}>
+        <Info>{categoryInfo}</Info>
         <Form onFormSubmit={handleFormSubmit} />
         <div className={styles.filters}>
           <FilterButton
