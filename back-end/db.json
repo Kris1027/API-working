@@ -17,6 +17,18 @@
       "translation": "jump",
       "category": "verb",
       "id": 3
+    },
+    {
+      "word": "pić",
+      "translation": "drink",
+      "category": "verb",
+      "id": 4
+    },
+    {
+      "word": "The Frela",
+      "translation": "Frela",
+      "category": "noun",
+      "id": 5
     }
   ]
 }
